@@ -1,8 +1,8 @@
 "use client"; 
 
 import { useState } from "react";
-import api from "../lib/api"; 
 import { useRouter } from "next/navigation"; // Next.js 라우터
+import styles from "./login.module.css";
 
 export default function LoginPage() {
   const [username, setUsername] = useState("");
@@ -31,22 +31,26 @@ export default function LoginPage() {
   };
 
   return (
-    <div>
-      <h1>로그인</h1>
-      <form onSubmit={handleLogin}>
+    <div className={styles.container}>
+      <h1 className={styles.title}>로그인</h1>
+      <form className={styles.form} onSubmit={handleLogin}>
         <input
+          className={styles.input}
           type="text"
           placeholder="Username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
         />
         <input
+          className={styles.input}
           type="password"
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <button type="submit">로그인</button>
+        <button className={styles.button} type="submit">
+          로그인
+        </button>
       </form>
     </div>
   );
