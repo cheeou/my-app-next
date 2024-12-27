@@ -1,11 +1,12 @@
 "use client"; 
 
 import { useState } from "react";
-import { useRouter } from "next/navigation"; // Next.js 라우터
+import { useRouter } from "next/navigation"; 
 import styles from "./login.module.css";
+import api from "./lib/api"; 
 
 export default function LoginPage() {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState(""); 
   const [password, setPassword] = useState("");
   const router = useRouter();
 
@@ -14,13 +15,15 @@ export default function LoginPage() {
 
     try {
       const response = await api.post("/login", {
-        username,
+        email, // FastAPI에 전달할 데이터
         password,
       });
 
-      // JWT 저장
-      const token = response.data.access_token;
-      localStorage.setItem("access_token", token);
+      const { access_token, refresh_token } = response.data;
+
+      // Access Token과 Refresh Token 저장
+      localStorage.setItem("access_token", access_token);
+      localStorage.setItem("refresh_token", refresh_token);
 
       alert("로그인 성공!");
       router.push("/protected"); // 보호된 페이지로 이동
@@ -37,9 +40,9 @@ export default function LoginPage() {
         <input
           className={styles.input}
           type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
         />
         <input
           className={styles.input}
